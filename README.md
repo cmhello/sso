@@ -4,7 +4,9 @@ Single Sign-On for PHP (Ajax compatible)
 Jasny\SSO is a relatively simply and straightforward solution for an single sign on (SSO) implementation. With SSO,
 logging into a single website will authenticate you for all affiliate sites.
 
-#### How it works
+**This project has been adopted and will be actively supported by [LegalThings](https://legalthings.io/).**
+
+### How it works
 
 When using SSO, when can distinguish 3 parties:
 
@@ -15,7 +17,7 @@ When using SSO, when can distinguish 3 parties:
 The broker has an id and a secret. These are know to both the broker and server.
 
 When the client visits the broker, it creates a random token, which is stored in a cookie. The broker will then send
-the client to the server, passing along the broker's id and . The server creates a hash using the broker id, broker
+the client to the server, passing along the broker's id and token. The server creates a hash using the broker id, broker
 secret and the token. This hash is used to create a link to the users session. When the link is created the server
 redirects the client back to the broker.
 
@@ -27,7 +29,7 @@ using the same session. When another broker joins in, it will also use the same 
 
 For a more indepth explanation, please [read this article](https://github.com/jasny/sso/wiki).
 
-#### How is this different from OAuth?
+### How is this different from OAuth?
 
 With OAuth, you can authenticate a user at an external server and get access to their profile info. However you
 aren't sharing a session.
@@ -46,7 +48,7 @@ Install this library through composer
 
 ## Usage
 
-#### Server
+### Server
 
 `Jasny\SSO\Server` is an abstract class. You need to create a your own class which implements the abstract methods.
 These methods are called fetch data from a data souce (like a DB).
@@ -97,7 +99,7 @@ This will make the object throw a Jasny\SSO\Exception, rather than set the HTTP 
 
 For more information, checkout the `server` example.
 
-#### Broker
+### Broker
 
 When creating a Jasny\SSO\Broker instance, you need to pass the server url, broker id and broker secret. The broker id
 and secret needs to be registered at the server (so fetched when using `getBrokerInfo($brokerId)`).
@@ -127,13 +129,15 @@ There is an example server and two example brokers. One with normal redirects an
 To proof it's working you should setup the server and two or more brokers, each on their own machine and their own
 (sub)domain. However you can also run both server and brokers on your own machine, simply to test it out.
 
+On *nix (Linux / Unix / OSX) run:
+
     php -S localhost:9000 -t examples/server/
     export SSO_SERVER=http://localhost:9000 SSO_BROKER_ID=Alice SSO_BROKER_SECRET=8iwzik1bwd; php -S localhost:9001 -t examples/broker/
     export SSO_SERVER=http://localhost:9000 SSO_BROKER_ID=Greg SSO_BROKER_SECRET=7pypoox2pc; php -S localhost:9002 -t examples/broker/
     export SSO_SERVER=http://localhost:9000 SSO_BROKER_ID=Julias SSO_BROKER_SECRET=ceda63kmhp; php -S localhost:9003 -t examples/ajax-broker/
 
 Now open some tabs and visit http://localhost:9001, http://localhost:9002 and http://localhost:9003.
-usename/password
+username/password
 jackie/jackie123
 john/john123
 
